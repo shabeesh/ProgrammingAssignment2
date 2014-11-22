@@ -56,16 +56,19 @@ makeCacheMatrix <- function(x = matrix()) {
 
 cacheSolve <- function(x, ...) {
 
+  ## obtain the inverse from the object passed as argument. Note that if the object is newly created or if the set function is called the 
+  ## inverse returned wil be null.
   inverse <- x$getInv() 
-    
+  
+  ## If inverse is not null, it means the inverse was already calculated, hence return is possible.
   if(!is.null(inverse)) {
       message("returning cached data")
       return(inverse)        
   }
+   
+  currMatrix <- x$get()     ## if not get the matrix from the object
+  y <- solve(currMatrix)    ## calculate the inverse.
     
-  currMatrix <- x$get()
-  y <- solve(currMatrix)
-    
-  x$setInv(y)
-  y  
+  x$setInv(y)               ## set the inverse
+  y                         ## return the inverse
 }
