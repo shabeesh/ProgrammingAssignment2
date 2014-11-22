@@ -1,4 +1,4 @@
-## This file contain the code as a solution for Programming Assignment 2 for the Coursera Course on R Programming.
+## This file contains the code as a solution for Programming Assignment 2 for the Coursera Course on R Programming.
 ## The objective of the program is to
 ##    (a) define a makeCacheMatrix function which will return an object with the matrix and its inverse.
 ##    (b) define a cacheSolve() function which takes the object created by makeCacheMatrix(x) function and return the inverse of the matrix.
@@ -26,22 +26,23 @@
 ## makeCacheMatrix function creates a special object that stores the matrix and its inverse.
 
 makeCacheMatrix <- function(x = matrix()) {
-  currInv <- NULL             ## set the inv as null
-  currMatrix <- x             ## set the matrixVal attribute equal to the value x 
+  currInv <- NULL             ## currInv, holds the inverse of the matrix, is initialised to null
+  currMatrix <- x             ## currMatrix, holds the current matrix, is intialised to x
   
-  ## set is the function that sets the matrix into the object.
+  ## set is the function that sets the data passed as argument into currMatrix value.
+  ## As a new matrix is set to currMatrix, the currInv is set to NULL so that it can be recomputed by cacheSolve
   set <- function(data){      
     currMatrix <<- data
-    currInv <<- NULL          ## As a new matrix is set to currMatrix, the currInv   
+    currInv <<- NULL          
   }
 
-  ## get is the function that returns the current matrix set int the special matrix object.
+  ## get is the function that returns the current matrix.
   get <- function() currMatrix
   
-  ## set the inverse of the matrix
+  ## sets the inverse of the matrix
   setInv <- function(inverse) currInv <<- inverse
   
-  ## get the inverse of the matrix
+  ## gets the inverse of the matrix
   getInv <- function() currInv
   
   list(set = set, get = get,
@@ -50,22 +51,21 @@ makeCacheMatrix <- function(x = matrix()) {
 }
 
 
-## The function takes the special matrix object created out by the makeCacheMatrix function and returns the inverse of the matrix set
-## in the object. If the inverse is set, then it returns the cached inverse else it recomputes the inverse.
+## The function takes the special matrix object created by the makeCacheMatrix function and returns the inverse of the matrix 
+## in the object. If the inverse is set, then it returns the cached inverse else it recomputes the inverse and sets it into the object.
+
 cacheSolve <- function(x, ...) {
-    inverse <- x$getInv() 
+
+  inverse <- x$getInv() 
     
-    if(!is.null(inverse)) {
+  if(!is.null(inverse)) {
       message("returning cached data")
       return(inverse)        
-    }
+  }
     
-    currMatrix <- x$get()
+  currMatrix <- x$get()
+  y <- solve(currMatrix)
     
-    y <- solve(currMatrix)
-    
-    x$setInv(y)
-    
-    y
-    
+  x$setInv(y)
+  y  
 }
